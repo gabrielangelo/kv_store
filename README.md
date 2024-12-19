@@ -193,6 +193,9 @@ Run tests:
 # Make test script executable
 chmod +x run-tests.sh
 
+# start docker-compose.test
+docker compose -f docker-compose.test.yml up --build -d
+
 # Run all tests
 ./run-tests.sh
 

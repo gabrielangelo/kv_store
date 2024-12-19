@@ -53,7 +53,8 @@ defmodule KvStore.MixProject do
       {:excoveralls, "~> 0.18", only: :test},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:mimic, "~> 1.10", only: :test},
-      {:hackney, "~> 1.9"}
+      {:hackney, "~> 1.9"},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 

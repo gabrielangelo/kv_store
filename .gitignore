@@ -25,3 +25,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 kv_store-*.tar
 
+/priv/plts/*.plt
+/priv/plts/*.plt.hash
