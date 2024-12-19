@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  kv_store:
+    build: .
+    ports:
+      - "4444:4444"
+    environment:
+      - MIX_ENV=prod
+      - SECRET_KEY_BASE=xJ4iHg5B5tZiyTRkHmqpBcGAM9p2PJi8LdsybeI6ZrkRYC9K6jzgHEDtU03V+tEn
+      - PHX_HOST=localhost
+      - PORT=4444
+    volumes:
+      - kv_store_data:/app/data
+
+volumes:
+  kv_store_data:

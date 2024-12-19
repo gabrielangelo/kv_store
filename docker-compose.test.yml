@@ -1,0 +1,16 @@
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - MIX_ENV=test
+    volumes:
+      - .:/app
+      - deps:/app/deps
+      - build:/app/_build
+    command: mix test
+
+volumes:
+  deps:
+  build:
