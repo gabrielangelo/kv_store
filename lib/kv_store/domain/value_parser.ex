@@ -15,6 +15,9 @@ defmodule KvStore.Domain.ValueParser do
   - Special value handling (TRUE, FALSE, NIL)
   """
 
+  @type parse_result :: {:ok, any()} | {:error, String.t()}
+  @type key_result :: {:ok, String.t()} | {:error, String.t()}
+
   @doc """
   Parses and validates a value string into its appropriate type.
 
@@ -35,7 +38,7 @@ defmodule KvStore.Domain.ValueParser do
       iex> ValueParser.parse("TRUE")
       {:ok, true}
   """
-
+  @spec parse(String.t() | boolean() | integer()) :: parse_result
   def parse(value) when is_binary(value) do
     cond do
       value == "NIL" ->
@@ -88,6 +91,7 @@ defmodule KvStore.Domain.ValueParser do
       iex> ValueParser.parse_key("123")
       {:error, "Value 123 is not valid as key"}
   """
+  @spec parse_key(String.t() | any()) :: key_result
   def parse_key(key) when is_binary(key) do
     cond do
       String.match?(key, ~r/^\d+$/) ->

@@ -21,6 +21,13 @@ defmodule KvStore.Domain.Transaction do
   """
   alias KvStore.Domain.Storage
 
+  @type client_id :: String.t()
+  @type key :: String.t()
+  @type value :: any()
+  @type transaction_result :: {:ok, map()} | {:error, String.t() | atom()}
+  @type operation_result :: :ok | {:error, String.t()}
+  @type set_result :: {value | nil, value} | {:error, String.t()}
+
   @transactions_dir "transactions"
 
   @doc """
@@ -35,6 +42,7 @@ defmodule KvStore.Domain.Transaction do
     - :ok on success
     - {:error, reason} if client already has active transaction
   """
+  @spec begin(client_id) :: operation_result
   def begin(client) do
     File.mkdir_p!(@transactions_dir)
     transaction_file = transaction_path(client)
@@ -69,6 +77,7 @@ defmodule KvStore.Domain.Transaction do
     - :ok if transaction commits successfully
     - {:error, reason} if validation fails or no active transaction
   """
+  @spec commit(client_id) :: operation_result
   def commit(client) do
     case read_transaction(client) do
       {:ok, transaction} ->
@@ -113,6 +122,7 @@ defmodule KvStore.Domain.Transaction do
     - :ok on successful rollback
     - {:error, reason} if no active transaction
   """
+  @spec rollback(client_id) :: operation_result
   def rollback(client) do
     transaction_file = transaction_path(client)
 
@@ -139,7 +149,7 @@ defmodule KvStore.Domain.Transaction do
   ## Returns
     - {old_value, new_value} tuple, where old_value might be nil
   """
-
+  @spec set(client_id, key, value) :: set_result
   def set(client, key, value) do
     case read_transaction(client) do
       {:ok, transaction} ->
@@ -158,6 +168,7 @@ defmodule KvStore.Domain.Transaction do
     end
   end
 
+  @spec get(client_id, key) :: value | nil
   def get(client, key) do
     case read_transaction(client) do
       {:ok, transaction} ->

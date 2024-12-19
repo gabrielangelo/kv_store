@@ -25,6 +25,11 @@ defmodule KvStore.Domain.CommandParser do
   alias KvStore.Domain.Storage
   alias KvStore.Domain.Transaction
 
+  @type client_id :: String.t()
+  @type command :: String.t()
+  @type command_result :: {:ok, any()} | {:error, String.t()}
+  @type parsed_command :: [String.t()] | {:error, String.t()}
+
   @doc """
   Parses and executes a command string for a specific client.
 
@@ -43,6 +48,7 @@ defmodule KvStore.Domain.CommandParser do
       iex> CommandParser.parse_and_execute("GET mykey", "client1")
       {:ok, 42}
   """
+  @spec parse_and_execute(command, client_id) :: command_result
   def parse_and_execute(command, client) do
     command
     |> String.trim()

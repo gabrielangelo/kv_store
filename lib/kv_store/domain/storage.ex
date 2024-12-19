@@ -19,6 +19,10 @@ defmodule KvStore.Domain.Storage do
   @storage_file "storage.dat"
   @lock_file "storage.lock"
 
+  @type key :: String.t()
+  @type value :: any()
+  @type set_result :: {value | nil, value}
+
   @doc """
   Sets a value for a key in storage.
 
@@ -32,6 +36,7 @@ defmodule KvStore.Domain.Storage do
   ## Returns
     - {old_value, new_value} tuple, where old_value might be nil
   """
+  @spec set(key, value) :: set_result
   def set(key, value) do
     with_lock(fn state ->
       old_value = Map.get(state, key)
@@ -51,6 +56,7 @@ defmodule KvStore.Domain.Storage do
     - The value associated with the key
     - nil if the key doesn't exist
   """
+  @spec get(key) :: value | nil
   def get(key) do
     with_lock(fn state ->
       Map.get(state, key)

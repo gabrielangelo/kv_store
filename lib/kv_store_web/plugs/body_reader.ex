@@ -9,6 +9,8 @@ defmodule KvStoreWeb.Plugs.PlainTextBodyReader do
 
   def call(conn, _opts) do
     {:ok, body, conn} = read_body(conn)
-    %{conn | body_params: body, params: Map.put(conn.params, "body", body)}
+    assigns = %{raw_body: body}
+    new_assigns = Map.merge(conn.assigns, assigns)
+    %{conn | assigns: new_assigns}
   end
 end
